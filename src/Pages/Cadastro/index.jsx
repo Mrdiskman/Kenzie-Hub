@@ -10,7 +10,14 @@ function Cadastro({ data, setData }) {
   const formSchema = yup.object().shape({
     name: yup.string().required("Nome obrigatorio"),
     email: yup.string().required("Email obrigatorio").email("Email invalido"),
-    password: yup.string().required("Senha obrigatoria"),
+    password: yup
+      .string()
+      .required("Senha obrigatoria")
+      .matches(
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@!#])[0-9a-zA-Z$*&!@#]{8,}$/,
+        "Deve conter 8 caracteres e ao menos um numero, uma letra maiuscula e simbolo"
+      ),
+      
     passwordAuthentication: yup
       .string()
       .oneOf([yup.ref("password")], "Senha incorreta")
@@ -64,8 +71,8 @@ function Cadastro({ data, setData }) {
             {...register("name")}
             className={`inputCadastro ${errors.name && "error"}`}
           />
-           <span>{errors.name && errors.name.message}</span>
         </label>
+        <span>{errors.name && errors.name.message}</span>
         <label className="labelCad">
           Email
           <input
@@ -76,8 +83,8 @@ function Cadastro({ data, setData }) {
             className={`inputCadastro ${errors.email && "error"}`}
             {...register("email")}
           />
-          <span>{errors.email && errors.email.message}</span>
         </label>
+        <span>{errors.email && errors.email.message}</span>
         <label className="labelCad">
           Senha
           <input
@@ -88,8 +95,8 @@ function Cadastro({ data, setData }) {
             {...register("password")}
             className={`inputCadastro ${errors.password && "error"}`}
           />
-           <span>{errors.password && errors.password.message}</span>
         </label>
+        <span>{errors.password && errors.password.message}</span>
         <label className="labelCad">
           Confirmar Senha
           <input
@@ -102,8 +109,11 @@ function Cadastro({ data, setData }) {
             }`}
             {...register("passwordAuthentication")}
           />
-           <span>{errors.passwordAuthentication && errors.passwordAuthentication.message}</span>
         </label>
+        <span>
+          {errors.passwordAuthentication &&
+            errors.passwordAuthentication.message}
+        </span>
         <label className="labelCad">
           Bio
           <input
@@ -114,8 +124,8 @@ function Cadastro({ data, setData }) {
             placeholder="Fale sobre você"
             {...register("bio")}
           />
-          <span>{errors.bio && errors.bio.message}</span>
         </label>
+        <span>{errors.bio && errors.bio.message}</span>
         <label className="labelCad">
           Contato
           <input
@@ -126,8 +136,8 @@ function Cadastro({ data, setData }) {
             placeholder="Opção de contato"
             {...register("contact")}
           />
-          <span>{errors.contact && errors.contact.message}</span>
         </label>
+        <span>{errors.contact && errors.contact.message}</span>
         <label className="labelCad">
           Selecione modulo
           <select

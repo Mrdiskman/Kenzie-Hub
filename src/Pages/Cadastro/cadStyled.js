@@ -23,6 +23,9 @@ span {
     margin: 0 auto;
     font-family: "Inter", sans-serif;
     font-weight: 600;
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 5px;
   }
 
 .inputCadastro {

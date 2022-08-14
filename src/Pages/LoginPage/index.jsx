@@ -27,6 +27,9 @@ function Login({ data }) {
       .post("https://kenziehub.herokuapp.com/sessions", dados)
       .then((res) => {
         localStorage.setItem("DadosDeUsuario", JSON.stringify(res))
+        const {token, user} = res.data
+        localStorage.setItem("@TOKEN", JSON.stringify(token))
+        localStorage.setItem("@UserId", JSON.stringify(user.id))
         toast.success("Sucesso!!!");
         navigate("/isLoged");
       })

@@ -9,12 +9,15 @@ function MainPage() {
 
   const modulo = dados.data.user.course_module;
 
-
+  function limpar(){
+    localStorage.clear()
+    navigate("/")
+  }
   return (
     <>
       <Header>
         <h1 className="tituloMain">KenzieHub</h1>
-        <button onClick={() => navigate("/")} className="botaoVoltarMain">
+        <button onClick={() => limpar()} className="botaoVoltarMain">
           Sair
         </button>
       </Header>
