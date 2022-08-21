@@ -9,7 +9,10 @@ export const LoginStyle = styled.div`
   background-color: black;
   padding-bottom: 15.5%;
 
-  
+  button{
+    cursor: pointer;
+  }
+
   .error {
     border: 1px solid red;
   }
@@ -38,7 +41,7 @@ export const LoginStyle = styled.div`
     align-items: center;
     margin: 0 auto;
     width: 90%;
-    height: 72vh;
+    min-height: 72vh;
     background: #212529;
     box-shadow: 0px 3.20867px 32.0867px -8.02168px rgba(0, 0, 0, 0.25);
     border-radius: 3.20867px;

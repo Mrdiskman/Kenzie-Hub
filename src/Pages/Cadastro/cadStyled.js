@@ -45,7 +45,7 @@ span {
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   margin-bottom: 20px;
   color: #f8f9fa;
   font-family: "Inter", sans-serif;
@@ -122,6 +122,7 @@ span {
   font-size: 12px;
   line-height: 23px;
   color: #f8f9fa;
+  cursor: pointer;
   border: #212529;
 }
 

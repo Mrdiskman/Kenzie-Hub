@@ -1,18 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import { Header, Main } from "./header";
+import { useState, useEffect } from "react";
+import Linguas from "../../components/Linguas";
+import Modal from "../../components/Modal";
+import axios from "axios";
 
 function MainPage() {
+  const [userData, setUserData] = useState({});
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("@TOKEN"));
+    axios
+      .get("https://kenziehub.herokuapp.com/profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setUserData(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, [userData.techs]);
+
   const navigate = useNavigate();
-  const dados = JSON.parse(localStorage.getItem("DadosDeUsuario"));
 
-  const userName = dados.data.user.name;
-
-  const modulo = dados.data.user.course_module;
-
-  function limpar(){
-    localStorage.clear()
-    navigate("/")
+  function limpar() {
+    localStorage.clear();
+    navigate("/");
   }
+  
+  const [modal, setModal] = useState(false);
+
   return (
     <>
       <Header>
@@ -25,16 +40,24 @@ function MainPage() {
       <Main>
         <div className="container">
           <div className="divisoriaDeDados">
-            <h1 className="nomeDeUsuario">{`Olá, ${userName}!!!`}</h1>
-            <p className="moduloDoUsuario">{modulo}</p>
+            <h1 className="nomeDeUsuario">{`Olá, ${userData.name}!!!`}</h1>
+            <p className="moduloDoUsuario">{userData.course_module}</p>
           </div>
-          <div className="divAviso">
-            <h1 className="aviso">Que pena! Estamos em Desenvolvimento :(</h1>
-            <p className="paragrafoDeAviso">
-              Nossa aplicação está em desenvolvimento, em breve teremos
-              novidades
-            </p>
+       
+          <div className="linguagens">
+            <h1 className="tecnologia">Tecnologias</h1>
+            <Modal setModal={setModal} modal={modal} />
+            <button
+              className="adicioneLinguagem"
+              onClick={() => setModal(true)}
+            >
+              +
+            </button>
           </div>
+          <div className="containerLinguas">
+            <Linguas tecnologias={userData.techs}/>
+          </div>
+     
         </div>
       </Main>
     </>

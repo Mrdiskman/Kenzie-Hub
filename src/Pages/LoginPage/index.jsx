@@ -1,40 +1,18 @@
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import axios from "axios";
-import { toast } from "react-toastify";
-import {LoginStyle} from "./loginStyled"
+import { useContext } from "react";
+import { LoginContext } from "../../context/Login";
+import { LoginStyle } from "./loginStyled";
 
-function Login({ data }) {
-  const formSchema = yup.object().shape({
-    email: yup.string().required("Email obrigatorio").email("Email invalido"),
-    password: yup.string().required("Senha obrigatoria"),
-  });
-  const navigate = useNavigate();
-  useEffect(() => console.log());
+function Login() {
+  const { navigate, register, handleSubmit, onSubmitLogin, errors } =
+    useContext(LoginContext);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(formSchema),
-  });
-  const onSubmitLogin = (dados) => {
-    axios
-      .post("https://kenziehub.herokuapp.com/sessions", dados)
-      .then((res) => {
-        localStorage.setItem("DadosDeUsuario", JSON.stringify(res))
-        const {token, user} = res.data
-        localStorage.setItem("@TOKEN", JSON.stringify(token))
-        localStorage.setItem("@UserId", JSON.stringify(user.id))
-        toast.success("Sucesso!!!");
-        navigate("/isLoged");
-      })
-      .catch((err) => toast.error("Email ou senha incorretos"));
-  };
+  useEffect(() => {
+    if (localStorage.getItem("@TOKEN")) {
+      navigate("/isLoged")
+    }
+  }, []);
+
   return (
     <LoginStyle>
       <h1 className="title">Kenzie Hub</h1>
@@ -68,7 +46,12 @@ function Login({ data }) {
           Enviar
         </button>
         <p className="question">Ainda não possui um cadastro?</p>
-        <button onClick={() => navigate("/register")} className="buttonDontHaveRegister">Cadastre-se</button>
+        <button
+          onClick={() => navigate("/register")}
+          className="buttonDontHaveRegister"
+        >
+          Cadastre-se
+        </button>
       </form>
     </LoginStyle>
   );
