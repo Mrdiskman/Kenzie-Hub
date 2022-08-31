@@ -1,11 +1,18 @@
 import axios from "axios";
-import img from "./excluir.png"
+import React from "react";
 import { toast } from "react-toastify";
+import { TechProps } from "../../context/Techs/interfaces";
 import { ContainerTecnologias } from "./style";
 
-function Linguas({ tecnologias }) {
-  function removeLinguagem(id) {
-    const token = JSON.parse(localStorage.getItem("@TOKEN"));
+
+
+interface LinguasProps{
+  tecnologias: TechProps[]
+}
+
+function Linguas({ tecnologias } : LinguasProps) {
+  function removeLinguagem(id:string) {
+    const token = JSON.parse(localStorage.getItem("@TOKEN")||"");
     axios
       .delete(`https://kenziehub.herokuapp.com/users/techs/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -16,7 +23,7 @@ function Linguas({ tecnologias }) {
       })
       .catch((err) => console.log(err));
   }
-  console.log(tecnologias);
+ 
   return (
     <ContainerTecnologias className="ulTec">
       {tecnologias?.map((elem, index) => (

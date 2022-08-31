@@ -4,8 +4,22 @@ import { toast } from "react-toastify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
+import React from "react";
 
-function Modal({ modal, setModal }) {
+
+
+interface ModalProps{
+  modal: Boolean
+  setModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+interface DataProps{
+  title: string
+  status: string
+}
+
+
+function Modal({ modal, setModal }: ModalProps) {
   const formSchema = yup.object().shape({
     title: yup.string().required("Titulo obrigatorio"),
     status: yup.string().required("Status obrigatorio"),
@@ -15,11 +29,12 @@ function Modal({ modal, setModal }) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<DataProps>({
     resolver: yupResolver(formSchema),
   });
-  const submitTech = (dados) => {
-    const token = JSON.parse(localStorage.getItem("@TOKEN"));
+  const submitTech = (dados: DataProps) => {
+    console.log(dados)
+    const token = JSON.parse(localStorage.getItem("@TOKEN")||"");
     axios
       .post("https://kenziehub.herokuapp.com/users/techs", dados, {
         headers: { Authorization: `Bearer ${token}` },
@@ -27,11 +42,10 @@ function Modal({ modal, setModal }) {
       .then((res) => {
         toast.success("Sucesso!!!");
         console.log(res);
-        // toast.success("Sucesso!!!");
+       
         setModal(false);
       })
       .catch((err) => console.log(err));
-    //   .catch((err) => toast.error("Erro ao adicionar"));
   };
   return (
     <>
@@ -51,13 +65,12 @@ function Modal({ modal, setModal }) {
               <p className="labelModal">Nome</p>
               <input
                 type="text"
-                name="title"
                 {...register("title")}
                 className="inputName"
               />
               <p className="labelModal">Selecionar status</p>
 
-              <select name="status" id="" {...register("status")} className="inputName">
+              <select   id="" {...register("status")} className="inputName">
                 <option value="Iniciante">Iniciante</option>
                 <option value="Intermediario">Intermediario</option>
                 <option value="Avançado">Avançado</option>

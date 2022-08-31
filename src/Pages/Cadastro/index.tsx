@@ -1,12 +1,22 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { RegisterContext } from "../../context/Register";
+import { OnSubmitRegisterProps, RegisterContext } from "../../context/Register";
 import { CadStyled } from "./cadStyled";
 import { useEffect } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { formSchema } from "../../context/Register/validators";
 
 function Cadastro() {
-  const { register, handleSubmit, onSubmitFunction, errors } =
-    useContext(RegisterContext);
+  const { onSubmitFunction } = useContext(RegisterContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<OnSubmitRegisterProps>({
+    resolver: yupResolver(formSchema),
+  });
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -29,8 +39,6 @@ function Cadastro() {
           Nome
           <input
             type="text"
-            name="name"
-            id=""
             placeholder="Digite aqui seu nome"
             {...register("name")}
             className={`inputCadastro ${errors.name && "error"}`}
@@ -41,8 +49,6 @@ function Cadastro() {
           Email
           <input
             type="text"
-            name="email"
-            id=""
             placeholder="Digite aqui seu email"
             className={`inputCadastro ${errors.email && "error"}`}
             {...register("email")}
@@ -53,8 +59,6 @@ function Cadastro() {
           Senha
           <input
             type="text"
-            name="password"
-            id=""
             placeholder="Digite aqui sua senha"
             {...register("password")}
             className={`inputCadastro ${errors.password && "error"}`}
@@ -65,8 +69,6 @@ function Cadastro() {
           Confirmar Senha
           <input
             type="text"
-            name="passwordAuthentication"
-            id=""
             placeholder="Digite novamente sua senha"
             className={`inputCadastro ${
               errors.passwordAuthentication && "error"
@@ -83,8 +85,6 @@ function Cadastro() {
           <input
             className={`inputCadastro ${errors.bio && "error"}`}
             type="text"
-            name="bio"
-            id=""
             placeholder="Fale sobre você"
             {...register("bio")}
           />
@@ -95,8 +95,6 @@ function Cadastro() {
           <input
             className={`inputCadastro ${errors.contact && "error"}`}
             type="text"
-            name="contact"
-            id=""
             placeholder="Opção de contato"
             {...register("contact")}
           />
@@ -104,12 +102,7 @@ function Cadastro() {
         <span>{errors.contact && errors.contact.message}</span>
         <label className="labelCad">
           Selecione modulo
-          <select
-            name="course_module"
-            id=""
-            {...register("course_module")}
-            className="inputCadastro"
-          >
+          <select {...register("course_module")} className="inputCadastro">
             <option value="Primeiro Módulo (Introdução de Frontend)">
               Primeiro Módulo
             </option>

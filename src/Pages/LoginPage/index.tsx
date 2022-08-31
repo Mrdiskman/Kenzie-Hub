@@ -1,15 +1,29 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import React from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
-import { LoginContext } from "../../context/Login";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { LoginContext, OnSubmitLoginProps } from "../../context/Login";
+import { formSchema } from "../../context/Register/validators";
 import { LoginStyle } from "./loginStyled";
 
 function Login() {
-  const { navigate, register, handleSubmit, onSubmitLogin, errors } =
-    useContext(LoginContext);
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<OnSubmitLoginProps>({
+    resolver: yupResolver(formSchema),
+  });
+
+  const { onSubmitLogin } = useContext(LoginContext);
 
   useEffect(() => {
     if (localStorage.getItem("@TOKEN")) {
-      navigate("/isLoged")
+      navigate("/isLoged");
     }
   }, []);
 
@@ -22,8 +36,6 @@ function Login() {
           Email
           <input
             type="text"
-            name="email"
-            id=""
             placeholder="Exemplo@gmail.com"
             {...register("email")}
             className={`input ${errors.email && "error"}`}
@@ -34,8 +46,6 @@ function Login() {
           Senha
           <input
             type="password"
-            name="password"
-            id=""
             placeholder="***********"
             {...register("password")}
             className={`input ${errors.password && "error"}`}

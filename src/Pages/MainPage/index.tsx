@@ -4,11 +4,19 @@ import { useState, useEffect } from "react";
 import Linguas from "../../components/Linguas";
 import Modal from "../../components/Modal";
 import axios from "axios";
+import React from "react";
+import { TechProps } from "../../context/Techs/interfaces";
+
+interface IUserData{
+  techs: TechProps[]
+  name: string
+  course_module: string
+}
 
 function MainPage() {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState<IUserData>({} as IUserData);
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("@TOKEN"));
+    const token = JSON.parse(localStorage.getItem("@TOKEN")||"");
     axios
       .get("https://kenziehub.herokuapp.com/profile", {
         headers: { Authorization: `Bearer ${token}` },
